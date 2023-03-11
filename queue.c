@@ -231,7 +231,34 @@ void q_reverseK(struct list_head *head, int k)
     } while (0)
 
 /* Sort elements of queue in ascending order */
-void q_sort(struct list_head *head) {}
+void q_sort(struct list_head *head)
+{
+    size_t len = 0, l;
+    struct list_head *it, *safe, *pending_list = NULL;
+    list_for_each_safe (it, safe, head) {
+        list_del(it);
+        it->next = NULL;
+        it->prev = pending_list;
+        pending_list = it;
+        for (l = len++; l & 1; l >>= 1) {
+            merge_two_list();
+        }
+    }
+
+    while (pending_list->prev) {
+        merge_two_list();
+    }
+    head->next = pending_list;
+    pending_list->prev = head;
+    list_for_each_safe (it, safe, head) {
+        if (safe) {
+            safe->prev = it;
+        } else {
+            it->next = head;
+            break;
+        }
+    }
+}
 #undef advance
 
 /* Remove every node which has a node with a strictly greater value anywhere to
