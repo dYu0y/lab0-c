@@ -215,6 +215,21 @@ void q_reverseK(struct list_head *head, int k)
         tmp;                          \
     })
 
+#define merge_two_list()                                                 \
+    do {                                                                 \
+        struct list_head *list_b = pending_list, *list_a = list_b->prev; \
+        list_b->prev = list_a->prev;                                     \
+        struct list_head **p = &pending_list;                            \
+        while (list_a && list_b) {                                       \
+            *p = strcmp(list_entry(list_a, element_t, list)->value,      \
+                        list_entry(list_b, element_t, list)->value) <= 0 \
+                     ? advance(list_a)                                   \
+                     : advance(list_b);                                  \
+            p = &(*p)->next;                                             \
+        }                                                                \
+        *p = (struct list_head *) ((int64_t) list_a | (int64_t) list_b); \
+    } while (0)
+
 /* Sort elements of queue in ascending order */
 void q_sort(struct list_head *head) {}
 #undef advance
