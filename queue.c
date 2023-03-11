@@ -208,8 +208,16 @@ void q_reverseK(struct list_head *head, int k)
     list_splice(&result, head);
 }
 
+#define advance(list)                 \
+    ({                                \
+        struct list_head *tmp = list; \
+        list = list->next;            \
+        tmp;                          \
+    })
+
 /* Sort elements of queue in ascending order */
 void q_sort(struct list_head *head) {}
+#undef advance
 
 /* Remove every node which has a node with a strictly greater value anywhere to
  * the right side of it */
