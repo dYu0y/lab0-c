@@ -127,6 +127,9 @@ bool q_delete_mid(struct list_head *head)
     }
     list_del(b);
     q_release_element(list_entry(b, element_t, list));
+
+    --list_entry(head, queue_contex_t, chain)->size;
+
     return true;
 }
 
@@ -156,6 +159,7 @@ bool q_delete_dup(struct list_head *head)
 
     list_for_each_entry_safe (iter, safe, &pending_list, list) {
         q_release_element(iter);
+        --list_entry(head, queue_contex_t, chain)->size;
     }
 
     return true;
